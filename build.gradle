@@ -1,71 +1,49 @@
-plugins {
-    id 'java'
-    id 'eclipse'
-    id "org.jetbrains.gradle.plugin.idea-ext" version "1.0.1"
-}
-
-group = 'tv.quaint'
-version = '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-    maven {
-        name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
     }
-    //OpenCollab
-    maven { url 'https://repo.opencollab.dev/maven-snapshots/' }
-    maven { url 'https://repo.opencollab.dev/maven-releases/'}
-    //JitPack
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://mvnrepository.com/artifact' }
-}
-
-dependencies {
-    compileOnly 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
-    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
-
-    implementation "com.github.simplix-softworks:simplixstorage:3.2.4"
-
-    implementation "net.objecthunter:exp4j:0.4.8"
-
-    implementation "com.zaxxer:HikariCP:5.0.1"
-
-    implementation "com.google.re2j:re2j:1.6"
-
-    implementation 'org.mongodb:mongo-java-driver:3.12.10'
-}
-
-def targetJavaVersion = 11
-java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.0"
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
+apply plugin: 'java-library'
+jar.enabled = false
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'com.github.johnrengelman.shadow'
+    
+    group = 'tv.quaint'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'papermc-repo'
+            url = 'https://papermc.io/repo/repository/maven-public/'
+        }
+        //OpenCollab
+        maven { url 'https://repo.opencollab.dev/maven-snapshots/' }
+        maven { url 'https://repo.opencollab.dev/maven-releases/'}
+        //JitPack
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://mvnrepository.com/artifact' }
+    }
+
+    jar.enabled = false
+    shadowJar {
+        destinationDirectory  = file("$rootDir/build/libs")
+        archiveClassifier.set('')
+        manifest {
+            attributes(
+                    'Implementation-Title': project.name,
+                    'Implementation-Version': project.version
+            )
+        }
+    }
+
+    artifacts {
+        archives shadowJar
     }
 }
-
-def templateSource = file('src/main/templates')
-def templateDest = layout.buildDirectory.dir('generated/sources/templates')
-def generateTemplates = tasks.register('generateTemplates', Copy) { task ->
-    def props = [
-            'version': project.version
-    ]
-    task.inputs.properties props
-
-    task.from templateSource
-    task.into templateDest
-    task.expand props
-}
-
-sourceSets.main.java.srcDir(generateTemplates.map { it.outputs })
-
-rootProject.idea.project.settings.taskTriggers.afterSync generateTemplates
-project.eclipse.synchronizationTasks(generateTemplates)

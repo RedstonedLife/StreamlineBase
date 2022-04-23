@@ -1,0 +1,8 @@
+debug: false
+
+database:
+  enabled: false
+  type: MONGO
+
+text:
+  update-display-names: true
