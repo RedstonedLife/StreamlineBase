@@ -19,6 +19,8 @@ public class OwnSavables extends ConfigPage {
     public int playerLevelingLevelStart;
     public String playerLevelingLevelEquation;
     public List<String> playerTagsDefault;
+    public int playerXPGiveMillisecondsTill;
+    public int playerXPGiveAmount;
 
     public OwnSavables() {
         super(StreamlineBase.EXPANSION, "savables", true, new AppendableList<>());
@@ -34,6 +36,8 @@ public class OwnSavables extends ConfigPage {
         consoleTagsDefault = config.getOrSetDefault("console.tags.default", List.of("console"));
 
         playerLevelingXPStart = config.getOrSetDefault("players.leveling.xp.start", 0);
+        playerXPGiveMillisecondsTill = config.getOrSetDefault("players.leveling.xp.give.milliseconds-till", 6000);
+        playerXPGiveAmount = config.getOrSetDefault("players.leveling.xp.give.amount", 1);
         playerLevelingLevelStart = config.getOrSetDefault("players.leveling.level.start", 1);
         playerLevelingLevelEquation = config.getOrSetDefault("players.leveling.level.equation", "2500 + (2500 * (%player_level% - 1))");
         playerTagsDefault = config.getOrSetDefault("players.tags.default", List.of("player"));

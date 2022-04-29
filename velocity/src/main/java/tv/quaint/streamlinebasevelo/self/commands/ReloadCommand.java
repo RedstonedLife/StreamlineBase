@@ -1,9 +1,11 @@
 package tv.quaint.streamlinebasevelo.self.commands;
 
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.proxy.Player;
 import tv.quaint.streamlinebasevelo.StreamlineBase;
 import tv.quaint.streamlinebasevelo.commands.CommandManager;
 import tv.quaint.streamlinebasevelo.commands.CommandPage;
+import tv.quaint.streamlinebasevelo.savables.users.SavablePlayer;
 import tv.quaint.streamlinebasevelo.utils.*;
 
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class ReloadCommand extends CommandPage {
     public static String reloadMessage;
 
     public ReloadCommand() {
-        super(StreamlineBase.EXPANSION, "parse");
+        super(StreamlineBase.EXPANSION, "streamline-reload");
     }
 
     @Override
@@ -35,6 +37,11 @@ public class ReloadCommand extends CommandPage {
             StreamlineBase.MESSAGES.reload();
             StreamlineBase.SAVABLES.reload();
             CommandManager.reloadCommands();
+
+            for (Player player : BasePlayerHandler.getOnlinePlayers()) {
+                SavablePlayer sp = SavableHandler.addUser(player);
+                BasePlayerHandler.updateDisplayName(sp);
+            }
 
             BaseMessaging.sendMessage(sender, reloadMessage);
         }

@@ -1,49 +1,40 @@
 package tv.quaint.streamlinebasevelo.savables;
 
 import tv.quaint.streamlinebasevelo.StreamlineBase;
+import tv.quaint.streamlinebasevelo.configs.ConfigPage;
+import tv.quaint.streamlinebasevelo.configs.SettingArgument;
 import tv.quaint.streamlinebasevelo.databases.DatabaseConfiguration;
 import tv.quaint.streamlinebasevelo.savables.users.SavableConsole;
 import tv.quaint.streamlinebasevelo.savables.users.SavablePlayer;
+import tv.quaint.streamlinebasevelo.utils.FileUtils;
 import tv.quaint.streamlinebasevelo.utils.obj.AppendableList;
 
 import java.io.File;
 
-public abstract class SavableFile extends DatabaseConfiguration {
+public abstract class SavableFile extends ConfigPage {
     public String uuid;
     public boolean enabled;
     public boolean firstLoad;
-    public SavableAdapter.Type type;
+    public SavableAdapter.SavableType type;
 
     public String parseFileName(File file) {
         return file.getName().substring(0, file.getName().lastIndexOf("."));
     }
 
-
-    public SavableFile(String uuid, SavableAdapter.Type type) {
-        super(StreamlineBase.CONFIG.databaseConfiguration == null ? SupportedType.LOCAL : StreamlineBase.CONFIG.databaseType,
-                StreamlineBase.EXPANSION, uuid, false, new AppendableList<>());
+    public SavableFile(String uuid, SavableAdapter.SavableType type) {
+        super(StreamlineBase.EXPANSION, uuid, false, new AppendableList<>(),  FileUtils.getCorrectSavableTypeFile(uuid, type));
     }
 
-    public SavableFile(String uuid, SavableAdapter.Type type, File file) {
-        super(StreamlineBase.CONFIG.databaseConfiguration == null ? SupportedType.LOCAL : StreamlineBase.CONFIG.databaseType,
-                StreamlineBase.EXPANSION, uuid, false, new AppendableList<>(), file);
+    public SavableFile(String uuid, SavableAdapter.SavableType type, File file) {
+        super(StreamlineBase.EXPANSION, uuid, false, new AppendableList<>(), file);
+
+        this.type = type;
+
+        this.enabled = true;
     }
 
-    public SavableFile(File file) {
-        super(StreamlineBase.CONFIG.databaseConfiguration == null ? SupportedType.LOCAL : StreamlineBase.CONFIG.databaseType,
-                StreamlineBase.EXPANSION, file.getName().replace(".yml", ""), false, new AppendableList<>(), file);
-
-        if (this instanceof SavablePlayer) this.type = SavableAdapter.Type.PLAYER;
-        if (this instanceof SavableConsole) this.type = SavableAdapter.Type.CONSOLE;
-
-        try {
-            reload();
-            this.enabled = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.enabled = false;
-        }
-
+    @Override
+    public void onReload(AppendableList<SettingArgument<?>> settingArguments) {
         this.populateDefaults();
 
         this.loadValues();

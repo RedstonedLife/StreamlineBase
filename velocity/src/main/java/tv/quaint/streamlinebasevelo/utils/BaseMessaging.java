@@ -281,7 +281,7 @@ public class BaseMessaging {
         return msg.startsWith("/");
     }
 
-    public static String normalize(String[] splitMsg){
+    public static String normalize(String[] splitMsg, String spacer){
         int i = 0;
         StringBuilder text = new StringBuilder();
 
@@ -290,7 +290,7 @@ public class BaseMessaging {
             if (split.equals("")) continue;
 
             if (i < splitMsg.length)
-                text.append(split).append(" ");
+                text.append(split).append(spacer);
             else
                 text.append(split);
         }
@@ -298,7 +298,7 @@ public class BaseMessaging {
         return text.toString();
     }
 
-    public static String normalize(TreeSet<String> splitMsg) {
+    public static String normalize(TreeSet<String> splitMsg, String spacer) {
         int i = 0;
         StringBuilder text = new StringBuilder();
 
@@ -315,7 +315,7 @@ public class BaseMessaging {
         return text.toString();
     }
 
-    public static String normalize(TreeMap<Integer, String> splitMsg) {
+    public static String normalize(TreeMap<Integer, String> splitMsg, String spacer) {
         int i = 0;
         StringBuilder text = new StringBuilder();
 
@@ -678,6 +678,21 @@ public class BaseMessaging {
 
         return List.of(strings);
     }
+    public static String getStringFromStringList(List<String> list) {
+        StringBuilder builder = new StringBuilder();
+
+        int i = 1;
+        for (String string : list) {
+            if (i != list.size()) {
+                builder.append(string).append(" ");
+            } else {
+                builder.append(string);
+            }
+        }
+
+        return builder.toString();
+    }
+
 
     public static boolean isNullOrLessThanEqualTo(Object[] thingArray, int lessThanOrEqualTo) {
         if (thingArray == null) return true;
@@ -703,7 +718,11 @@ public class BaseMessaging {
     }
 
     public static String argsToStringMinus(String[] args, int... toRemove){
-        return normalize(argsMinus(args, toRemove));
+        return normalize(argsMinus(args, toRemove), " ");
+    }
+
+    public static String argsToStringMinus(String[] args, String spacer, int... toRemove){
+        return normalize(argsMinus(args, toRemove), spacer);
     }
 
     public static String argsToString(String[] args){
@@ -713,6 +732,6 @@ public class BaseMessaging {
             argsSet.put(i, args[i]);
         }
 
-        return normalize(argsSet);
+        return normalize(argsSet, " ");
     }
 }

@@ -21,11 +21,14 @@ public class CommandManager {
     }
 
     public static void registerCommand(CommandPage page) {
+        if (! page.enabled) return;
+
         StreamlineBase.SERVER.getCommandManager().register(
                 getCommandMeta(page.command),
                 page.command
         );
         loadedCommands.put(page, page.command);
+        BaseMessaging.logInfo("Registered command: " + page.command.base + " | With aliases: " + BaseMessaging.getStringFromStringList(page.command.aliases));
     }
 
     public static void unregisterCommand(CommandPage page) {

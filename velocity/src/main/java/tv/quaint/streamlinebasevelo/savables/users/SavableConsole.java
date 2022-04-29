@@ -2,7 +2,9 @@ package tv.quaint.streamlinebasevelo.savables.users;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import tv.quaint.streamlinebasevelo.StreamlineBase;
+import tv.quaint.streamlinebasevelo.configs.SettingArgument;
 import tv.quaint.streamlinebasevelo.savables.SavableAdapter;
+import tv.quaint.streamlinebasevelo.utils.obj.AppendableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,9 @@ public class SavableConsole extends SavableUser {
     public List<String> savedKeys = new ArrayList<>();
 
     public SavableConsole() {
-        super("%", SavableAdapter.Type.CONSOLE);
+        super("%", SavableAdapter.getTypeByIdentifier("console"));
+
+        this.uuid = this.identifier;
 
         if (this.uuid == null) return;
         if (this.uuid.equals("")) return;
@@ -40,16 +44,6 @@ public class SavableConsole extends SavableUser {
 
     @Override
     public void saveMore() {
-
-    }
-
-    @Override
-    public void sync() {
-
-    }
-
-    @Override
-    public void onMoreReload() {
 
     }
 }

@@ -35,6 +35,16 @@ public abstract class ConfigPage {
         reload();
     }
 
+    public ConfigPage(BaseExpansion expansion, String identifier, ConfigFileInput fileInput) {
+        this.expansion = expansion;
+        this.identifier = identifier;
+        this.file = fileInput.file;
+        this.hasDefault = fileInput.hasDefault;
+        this.settingArguments = new AppendableList<>();
+
+        reload();
+    }
+
     public ConfigPage(BaseExpansion expansion, String identifier, boolean hasDefault, File file) {
         this.expansion = expansion;
         this.identifier = identifier;

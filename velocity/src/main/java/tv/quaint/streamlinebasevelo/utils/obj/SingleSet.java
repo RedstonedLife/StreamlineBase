@@ -9,11 +9,13 @@ public class SingleSet<K, V> {
         this.value = value;
     }
 
-    public void updateKey(K key){
+    public SingleSet<K, V> updateKey(K key){
         this.key = key;
+        return this;
     }
 
-    public void updateValue(V value){
+    public SingleSet<K, V> updateValue(V value){
         this.value = value;
+        return this;
     }
 }

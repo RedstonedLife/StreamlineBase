@@ -11,6 +11,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import tv.quaint.streamlinebasevelo.StreamlineBase;
 import tv.quaint.streamlinebasevelo.savables.SavableAdapter;
+import tv.quaint.streamlinebasevelo.self.pages.PlayerPage;
 import tv.quaint.streamlinebasevelo.utils.BaseMessaging;
 import tv.quaint.streamlinebasevelo.utils.BasePlayerHandler;
 import tv.quaint.streamlinebasevelo.utils.MathUtils;
@@ -43,17 +44,16 @@ public class SavablePlayer extends SavableUser {
     }
 
     public SavablePlayer(Player player) {
-        super(player, SavableAdapter.Type.PLAYER);
-        this.player = player;
-        setLatestIP(getLatestIP());
+        this(player.getUniqueId());
     }
 
     public SavablePlayer(String uuid){
-        super(uuid, SavableAdapter.Type.PLAYER);
+        super(uuid, SavableAdapter.getTypeByIdentifier("player"));
+        this.player = BasePlayerHandler.getPlayerByUUID(uuid);
     }
 
     public SavablePlayer(UUID uuid) {
-        super(uuid.toString(), SavableAdapter.Type.PLAYER);
+        this(uuid.toString());
     }
 
     @Override
@@ -100,11 +100,9 @@ public class SavablePlayer extends SavableUser {
         set("player.stats.experience.total", totalXP);
         set("player.stats.experience.current", currentXP);
         set("player.stats.playtime.seconds", playSeconds);
-    }
 
-    @Override
-    public void sync() {
-
+        PlayerPage playerPage = new PlayerPage(this, false);
+        playerPage.updateLatest(this);
     }
 
     public void addName(String name){
@@ -123,7 +121,9 @@ public class SavablePlayer extends SavableUser {
     }
 
     public void setLatestIP(String ip) {
+        if (player == null) return;
         this.latestIP = ip;
+        addIP(SavableHandler.parsePlayerIP(player));
         saveAll();
     }
 
@@ -212,7 +212,7 @@ public class SavablePlayer extends SavableUser {
     public int getNeededXp(){
         int needed = 0;
 
-        String function = StreamlineBase.SAVABLES.playerLevelingLevelEquation
+        String function = BaseMessaging.replaceAllSenderBungee(BaseMessaging.replaceAllPlayerBungee(StreamlineBase.SAVABLES.playerLevelingLevelEquation, this), this)
                         .replace("%default_level%", String.valueOf(defaultLevel));
 
         needed = (int) Math.round(MathUtils.eval(function));
@@ -418,10 +418,5 @@ public class SavablePlayer extends SavableUser {
     
     public boolean isConnected() {
         return online;
-    }
-
-    @Override
-    public void onMoreReload() {
-
     }
 }

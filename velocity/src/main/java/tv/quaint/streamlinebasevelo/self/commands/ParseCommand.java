@@ -48,8 +48,7 @@ public class ParseCommand extends CommandPage {
             }
 
             BaseMessaging.sendMessage(sender, parseMessage
-                    .replace("%to_parse%", BaseMessaging.argsToStringMinus(args, 1)),
-                            as);
+                    .replace("%to_parse%", BaseMessaging.argsToStringMinus(args, 0)), as);
         }
 
         @Override

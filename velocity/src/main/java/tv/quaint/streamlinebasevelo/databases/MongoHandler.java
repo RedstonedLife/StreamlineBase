@@ -28,8 +28,12 @@ public class MongoHandler {
         return database;
     }
 
+    public static boolean containsDatabase(DatabaseConfiguration configuration) {
+        return loadedDatabase.containsKey(configuration);
+    }
+
     public static void loadDatabase(DatabaseConfiguration configuration) {
-        if (getDatabase(configuration) != null) removeDatabase(configuration);
+        if (containsDatabase(configuration)) removeDatabase(configuration);
 
         MongoClientURI uri = new MongoClientURI(configuration.getUri());
         MongoClient client = new MongoClient(uri);

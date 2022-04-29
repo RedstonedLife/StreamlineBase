@@ -4,6 +4,7 @@ import de.leonhard.storage.Config;
 import de.leonhard.storage.LightningBuilder;
 import tv.quaint.streamlinebasevelo.StreamlineBase;
 import tv.quaint.streamlinebasevelo.expansions.BaseExpansion;
+import tv.quaint.streamlinebasevelo.savables.SavableAdapter;
 
 import java.io.File;
 import java.io.InputStream;
@@ -75,6 +76,10 @@ public class FileUtils {
 
     public static File getHistorySave(String uuid) {
         return new File(getHistoryDirectory(StreamlineBase.EXPANSION), uuid + ".yml");
+    }
+
+    public static File getCorrectSavableTypeFile(String identifier, SavableAdapter.SavableType type) {
+        return new File(type.path, identifier + type.suffix);
     }
 
     public static File getPlayersDirectory(BaseExpansion expansion) {

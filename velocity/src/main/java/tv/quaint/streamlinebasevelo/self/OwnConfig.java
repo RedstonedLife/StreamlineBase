@@ -11,7 +11,8 @@ public class OwnConfig extends ConfigPage {
     public boolean databaseEnabled;
     public DatabaseConfiguration.SupportedType databaseType;
     public DatabaseConfiguration databaseConfiguration;
-
+    public String joinCollection;
+    public String playersCollection;
     public boolean textUpdateDisplayName;
 
     public OwnConfig() {
@@ -31,6 +32,8 @@ public class OwnConfig extends ConfigPage {
                     // do nothing
                 }
             };
+            joinCollection = config.getOrSetDefault("database.collections.joins", "join-info");
+            playersCollection = config.getOrSetDefault("database.collections.players", "player-info");
         }
 
         textUpdateDisplayName = config.getOrSetDefault("text.update-display-names", true);

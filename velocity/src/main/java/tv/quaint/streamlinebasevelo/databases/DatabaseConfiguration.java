@@ -77,14 +77,14 @@ public abstract class DatabaseConfiguration extends ConfigPage {
         if (! this.of.equals(SupportedType.LOCAL)) {
             this.database = config.getOrSetDefault("database", "");
             this.ip = config.getOrSetDefault("ip", "");
-            this.port = config.getOrSetDefault("port", "");
-            if (this.of.equals(SupportedType.MONGO)) this.port = SupportedType.MONGO.defaultPort();
-            if (this.of.equals(SupportedType.MYSQL)) this.port = SupportedType.MYSQL.defaultPort();
+            this.port = config.getOrDefault("port", "");
+            if (this.of.equals(SupportedType.MONGO)) this.port = config.getOrSetDefault("port", SupportedType.MONGO.defaultPort());
+            if (this.of.equals(SupportedType.MYSQL)) this.port = config.getOrSetDefault("port", SupportedType.MYSQL.defaultPort());
             this.username = config.getOrSetDefault("username", "");
             this.password = config.getOrSetDefault("password", "");
-            this.connectionString = config.getOrSetDefault("connection-string", "");
-            if (this.of.equals(SupportedType.MONGO)) this.connectionString = SupportedType.MONGO.formatDefault;
-            if (this.of.equals(SupportedType.MYSQL)) this.connectionString = SupportedType.MYSQL.formatDefault;
+            this.connectionString = config.getOrDefault("connection-string", "");
+            if (this.of.equals(SupportedType.MONGO)) this.connectionString = config.getOrDefault("connection-string", SupportedType.MONGO.formatDefault);
+            if (this.of.equals(SupportedType.MYSQL)) this.connectionString = config.getOrDefault("connection-string", SupportedType.MYSQL.formatDefault);
         }
 
         onMoreReload();
