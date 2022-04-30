@@ -1,0 +1,7 @@
+name: StreamlineBase
+version: ${project.version}
+main: tv.quaint.streamlinebase.StreamlineBase
+author: Quaint
+depends:
+  - LuckPerms
+softdepends: []

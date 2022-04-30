@@ -1,0 +1,13 @@
+prefix: "&c&lStreamline &d&l>> &r"
+null-string: "&c&lNULL&r"
+needs-more: "&cYou entered too few arguments for this command!"
+needs-less: "&cYou entered too many arguments for this command!"
+no-player: "&cWe cannot find that player!"
+
+player:
+  regular:
+    online: "%player_absolute% &a•"
+    offline: "%player_absolute% &c•"
+  display:
+    online: "%player_formatted% &a•"
+    offline: "%player_formatted% &c•"

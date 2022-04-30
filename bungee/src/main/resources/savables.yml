@@ -1,0 +1,25 @@
+points:
+  default: 0
+
+console:
+  name:
+    regular: "Console"
+    display: "&c&lConsole&r"
+  server: "CONSOLE"
+  tags:
+    default:
+      - console
+
+players:
+  leveling:
+    xp:
+      start: 0
+      give:
+        milliseconds-till: 6000 # 6 seconds
+        amount: 1 # 5 every 30 seconds.
+    level:
+      start: 1
+      equation: "2500 + (2500 * (%player_level% - 1))"
+  tags:
+    default:
+      - player

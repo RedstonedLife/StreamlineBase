@@ -4,15 +4,11 @@ plugins {
 
 repositories {
     //Velocity
-    maven {
-        name = 'papermc-repo'
-        url = 'https://papermc.io/repo/repository/maven-public/'
-    }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
 dependencies {
-    compileOnly 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
-    annotationProcessor 'com.velocitypowered:velocity-api:3.1.0-SNAPSHOT'
+    compileOnly "net.md-5:bungeecord-api:1.18-R0.1-SNAPSHOT"
 
     compileOnly "net.luckperms:api:5.4"
 
@@ -29,4 +25,5 @@ dependencies {
 
 blossom {
     replaceToken '${project.version}', project.version, 'src/main/java/tv/quaint/streamlinebase/utils/obj/BaseConstants.java'
+    replaceToken '${project.version}', project.version, 'src/main/resources/bungee.yml'
 }
