@@ -25,8 +25,8 @@ public class DatabasePage {
         this.fields.add(queryKey);
     }
 
-    public SingleSet<String, ?> getField(String key) {
-        for (SingleSet<String, ?> field : this.fields) {
+    public SingleSet<String, DatabaseThing<?>> getField(String key) {
+        for (SingleSet<String, DatabaseThing<?>> field : this.fields) {
             if (field.key.equals(key)) return field;
         }
         return null;

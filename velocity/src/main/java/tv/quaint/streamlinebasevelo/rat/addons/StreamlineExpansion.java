@@ -43,10 +43,10 @@ public class StreamlineExpansion extends RATExpansion {
     @Override
     public String onRequest(SavableUser user, String params) {
         if (params.equals("join_first")) {
-            return new JoinPage(user.uuid, false).get().getField("first").value.toString();
+            return new JoinPage(user.uuid, false).get().getField("first").value.thing.toString();
         }
         if (params.equals("join_latest")) {
-            return new JoinPage(user.uuid, false).get().getField("latest").value.toString();
+            return new JoinPage(user.uuid, false).get().getField("latest").value.thing.toString();
         }
         return null;
     }

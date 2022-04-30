@@ -23,8 +23,6 @@ public class Node {
     }
 
     public void append(String string, DatabaseThing<?> thing) {
-        BaseMessaging.logInfo("Parsing: " + string + " => " + thing.thing);
-
         String[] split = string.split("\\.", 2);
         if (split.length > 1) {
             Node node;
