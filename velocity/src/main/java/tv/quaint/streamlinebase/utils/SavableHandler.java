@@ -33,6 +33,18 @@ public class SavableHandler {
         return savablePlayer;
     }
 
+    public static SavableConsole addUser() {
+        if (getUser("%") != null) {
+            return (SavableConsole) getUser("%");
+        }
+
+        SavableConsole savableConsole = new SavableConsole();
+
+        loadedUsers.add(savableConsole);
+
+        return savableConsole;
+    }
+
     public static void removeUser(SavableUser user) {
         user.saveAll();
         loadedUsers.remove(user);
@@ -42,7 +54,7 @@ public class SavableHandler {
         if (getUser(uuid) != null) return getUser(uuid);
 
         if (uuid.equals("%")) {
-            return new SavableConsole();
+            return addUser();
         } else {
             return new SavablePlayer(uuid);
         }
@@ -63,5 +75,29 @@ public class SavableHandler {
         ipSt = ipSplit[0];
 
         return ipSt;
+    }
+
+    public static List<SavablePlayer> getJustPlayers() {
+        List<SavablePlayer> toReturn = new ArrayList<>();
+
+        for (SavableUser user : loadedUsers) {
+            if (! user.uuid.equals("%") || user instanceof SavablePlayer) {
+                toReturn.add((SavablePlayer) user);
+            }
+        }
+
+        return toReturn;
+    }
+
+    public static List<SavableUser> getJustStaff() {
+        List<SavableUser> toReturn = new ArrayList<>();
+
+        for (SavablePlayer player : getJustPlayers()) {
+            if (player.hasPermission(StreamlineBase.CONFIG.proxyStaffPermission)) toReturn.add(player);
+        }
+
+        toReturn.add(getOrGetSavableUser("%"));
+
+        return toReturn;
     }
 }

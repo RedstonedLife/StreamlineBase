@@ -14,6 +14,7 @@ public class OwnConfig extends ConfigPage {
     public String joinCollection;
     public String playersCollection;
     public boolean textUpdateDisplayName;
+    public String proxyStaffPermission;
 
     public OwnConfig() {
         super(StreamlineBase.EXPANSION, "config", true, new AppendableList<>());
@@ -37,5 +38,6 @@ public class OwnConfig extends ConfigPage {
         }
 
         textUpdateDisplayName = config.getOrSetDefault("text.update-display-names", true);
+        proxyStaffPermission = config.getOrSetDefault("proxy.staff-permission", "streamline.group.staff");
     }
 }

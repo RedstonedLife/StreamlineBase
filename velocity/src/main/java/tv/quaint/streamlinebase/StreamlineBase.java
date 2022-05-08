@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 )
 public class StreamlineBase extends BasePlugin {
     public static String ID = BaseConstants.ID;
+    public static List<String> AUTHORS = BaseConstants.AUTHORS;
     public static OwnConfig CONFIG;
     public static OwnMessages MESSAGES;
     public static OwnSavables SAVABLES;

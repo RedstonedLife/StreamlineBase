@@ -31,6 +31,26 @@ public class BasePlayerHandler {
         return toReturn;
     }
 
+    public static List<ProxiedPlayer> getOnlineStaff() {
+        List<ProxiedPlayer> toReturn = new ArrayList<>();
+
+        for (ProxiedPlayer player : getOnlinePlayers()) {
+            if (player.hasPermission(StreamlineBase.CONFIG.proxyStaffPermission)) toReturn.add(player);
+        }
+
+        return toReturn;
+    }
+
+    public static List<String> getOnlineStaffNames() {
+        List<String> toReturn = new ArrayList<>();
+
+        for (ProxiedPlayer player : getOnlineStaff()) {
+            toReturn.add(player.getName());
+        }
+
+        return toReturn;
+    }
+
     public static ProxiedPlayer getPlayerByUUID(String uuid) {
         for (ProxiedPlayer player : getOnlinePlayers()) {
             if (player.getUniqueId().toString().equals(uuid)) return player;

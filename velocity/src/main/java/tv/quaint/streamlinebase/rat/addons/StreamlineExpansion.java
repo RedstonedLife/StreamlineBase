@@ -7,6 +7,9 @@ import tv.quaint.streamlinebase.rat.RATExpansion;
 import tv.quaint.streamlinebase.savables.users.SavableUser;
 import tv.quaint.streamlinebase.self.pages.JoinPage;
 import tv.quaint.streamlinebase.utils.BasePlayerHandler;
+import tv.quaint.streamlinebase.utils.SavableHandler;
+
+import java.util.List;
 
 public class StreamlineExpansion extends RATExpansion {
     public StreamlineExpansion() {
@@ -18,24 +21,31 @@ public class StreamlineExpansion extends RATExpansion {
         if (params.equals("prefix")) return StreamlineBase.MESSAGES.prefix;
         if (params.equals("version")) return StreamlineBase.getVersion();
         if (params.equals("players_online")) return String.valueOf(BasePlayerHandler.getOnlinePlayers().size());
-//        if (params.equals("players_loaded")) return String.valueOf(BasePlayerHandler.getStats().size());
-//        if (params.equals("staff_online")) return String.valueOf(BasePlayerHandler.getJustStaffOnline().size());
+        if (params.equals("players_loaded")) return String.valueOf(SavableHandler.getJustPlayers().size());
+        if (params.equals("staff_online")) return String.valueOf(BasePlayerHandler.getOnlineStaff().size());
 
-        if (params.matches("([a][u][t][h][o][r][\\[]([0-2])[\\]])")) {
-            Pattern pattern = Pattern.compile("([a][u][t][h][o][r][\\[]([0-9])[\\]])");
+        List<String> authors = StreamlineBase.AUTHORS;
+        if (params.matches("([a][u][t][h][o][r][\\[]([0-" + (authors.size() - 1) + "])[\\]])")) {
+            Pattern pattern = Pattern.compile("([a][u][t][h][o][r][\\[]([0-" + (authors.size() - 1) + "])[\\]])");
             Matcher matcher = pattern.matcher(params);
             while (matcher.find()) {
-                return StreamlineBase.getDescription().getAuthors().get(Integer.parseInt(matcher.group(2)));
+                int i = Integer.parseInt(matcher.group(2));
+                if (i >= authors.size()) i = authors.size() - 1;
+
+                return authors.get(i);
             }
         }
 
-//        if (params.matches("([s][t][a][f][f][\\[]([0-" + (BasePlayerHandler.getNamesJustStaffOnline().size() - 1) + "])[\\]])")) {
-//            Pattern pattern = Pattern.compile("([s][t][a][f][f][\\[]([0-" + (BasePlayerHandler.getNamesJustStaffOnline().size() - 1) + "])[\\]])");
-//            Matcher matcher = pattern.matcher(params);
-//            while (matcher.find()) {
-//                return BasePlayerHandler.getNamesJustStaffOnline().get(Integer.parseInt(matcher.group(2)));
-//            }
-//        }
+        if (params.matches("([s][t][a][f][f][\\[]([0-" + (BasePlayerHandler.getOnlineStaffNames().size() - 1) + "])[\\]])")) {
+            Pattern pattern = Pattern.compile("([s][t][a][f][f][\\[]([0-" + (BasePlayerHandler.getOnlineStaffNames().size() - 1) + "])[\\]])");
+            Matcher matcher = pattern.matcher(params);
+            while (matcher.find()) {
+                int i = Integer.parseInt(matcher.group(2));
+                if (i >= BasePlayerHandler.getOnlineStaffNames().size()) i = BasePlayerHandler.getOnlineStaffNames().size() - 1;
+
+                return BasePlayerHandler.getOnlineStaffNames().get(i);
+            }
+        }
 
         return null;
     }

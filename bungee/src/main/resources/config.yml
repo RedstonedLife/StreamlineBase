@@ -6,3 +6,6 @@ database:
 
 text:
   update-display-names: true
+
+proxy:
+  staff-permission: "streamline.group.staff"
